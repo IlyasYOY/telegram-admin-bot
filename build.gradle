@@ -1,0 +1,44 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.3'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'ru.ilyasyoy.telegram.admin'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '16'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	telegramBotsVersion = '5.3.0'
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	implementation "org.telegram:telegrambots-spring-boot-starter:${telegramBotsVersion}"
+	implementation "org.telegram:telegrambots-extensions:${telegramBotsVersion}"
+	implementation "org.telegram:telegrambots-chat-session-bot:${telegramBotsVersion}"
+	implementation "org.telegram:telegrambots-meta:${telegramBotsVersion}"
+	implementation "org.telegram:elegrambots-abilities:${telegramBotsVersion}"
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	useJUnitPlatform()
+}
