@@ -27,10 +27,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	implementation "org.telegram:telegrambots-spring-boot-starter:${telegramBotsVersion}"
-	implementation "org.telegram:telegrambots-extensions:${telegramBotsVersion}"
+	implementation "org.telegram:telegrambotsextensions:${telegramBotsVersion}"
 	implementation "org.telegram:telegrambots-chat-session-bot:${telegramBotsVersion}"
 	implementation "org.telegram:telegrambots-meta:${telegramBotsVersion}"
-	implementation "org.telegram:elegrambots-abilities:${telegramBotsVersion}"
+	implementation "org.telegram:telegrambots-abilities:${telegramBotsVersion}"
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
