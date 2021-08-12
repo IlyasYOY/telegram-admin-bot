@@ -1,0 +1,4 @@
+
+telegram.admin.bot:
+  username: AdminBot
+  token: test-token

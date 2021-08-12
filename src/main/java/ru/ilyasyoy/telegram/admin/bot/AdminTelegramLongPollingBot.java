@@ -22,5 +22,6 @@ public final class AdminTelegramLongPollingBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        log.debug("Update received: {}", update);
     }
 }

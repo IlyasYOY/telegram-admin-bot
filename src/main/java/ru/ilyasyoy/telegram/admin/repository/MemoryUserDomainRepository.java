@@ -1,5 +1,6 @@
 package ru.ilyasyoy.telegram.admin.repository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -10,17 +11,21 @@ import ru.ilyasyoy.telegram.admin.domain.repository.UserDomainRepository;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 @ConditionalOnMissingBean(UserDomainRepository.class)
 public final class MemoryUserDomainRepository implements UserDomainRepository {
     private final Map<String, User> data = new ConcurrentHashMap<>();
+    private final IdsHelper idsHelper;
 
     @Override
     public Collection<User> findAll() {
@@ -50,14 +55,15 @@ public final class MemoryUserDomainRepository implements UserDomainRepository {
         Map<String, User> usersByTelegramId = collection.stream()
                 .collect(Collectors.toMap(User::telegramId, Function.identity()));
 
-        checkIdsNotExist(usersByTelegramId.keySet());
+        idsHelper.checkIdsNotExist(data.keySet(), usersByTelegramId.keySet());
 
         data.putAll(usersByTelegramId);
     }
 
     @Override
     public void save(@NotNull User item) {
-        checkIdsNotExist(item.telegramId());
+        Set<String> itemIdContainer = Collections.singleton(item.telegramId());
+        idsHelper.checkIdsNotExist(data.keySet(), itemIdContainer);
         data.put(item.telegramId(), item);
     }
 
@@ -88,27 +94,5 @@ public final class MemoryUserDomainRepository implements UserDomainRepository {
         }
         data.remove(item.telegramId());
         return true;
-    }
-
-    private void checkIdsNotExist(String... ids) {
-        Collection<String> existingAnyKeys = findIdsThatAlreadyExist(Arrays.stream(ids).toList());
-        if (!existingAnyKeys.isEmpty()) {
-            String message = "Cannot save: %s, they already exist".formatted(existingAnyKeys);
-            log.error(message);
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    private void checkIdsNotExist(Collection<String> ids) {
-        Collection<String> existingAnyKeys = findIdsThatAlreadyExist(ids);
-        if (!existingAnyKeys.isEmpty()) {
-            String message = "Cannot save: %s, they already exist".formatted(existingAnyKeys);
-            log.error(message);
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    private Collection<String> findIdsThatAlreadyExist(Collection<String> ids) {
-        return CollectionUtils.intersection(ids, data.keySet());
     }
 }
