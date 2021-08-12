@@ -1,77 +1,77 @@
 package ru.ilyasyoy.telegram.admin.repository;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 import ru.ilyasyoy.telegram.admin.domain.entity.Chat;
-import ru.ilyasyoy.telegram.admin.domain.entity.User;
 import ru.ilyasyoy.telegram.admin.domain.repository.ChatDomainRepository;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 @ConditionalOnMissingBean(ChatDomainRepository.class)
 public final class MemoryChatDomainRepository implements ChatDomainRepository {
-  private final Map<String, User> data = new ConcurrentHashMap<>();
-  private final IdsHelper idsHelper;
+    private final Map<String, Chat> data = new ConcurrentHashMap<>();
+    private final IdsHelper idsHelper;
 
-  @Override
-  public Collection<Chat> findAll() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    public Collection<Chat> findAll() {
+        return data.values();
+    }
 
-  @Override
-  public Optional<Chat> findByTelegramId(@NotNull String telegramId) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    public Optional<Chat> findByTelegramId(@NotNull String telegramId) {
+        Chat chat = data.get(telegramId);
+        if (chat == null) {
+            return Optional.empty();
+        }
 
-  @Override
-  public Optional<Chat> findByUsername(@NotNull String username) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+        return Optional.of(chat);
+    }
 
-  @Override
-  public void saveAll(Collection<Chat> collection) {
-    // TODO Auto-generated method stub
+    @Override
+    public void saveAll(Collection<Chat> collection) {
+        Map<String, Chat> telegramIdOnChats =
+                collection.stream()
+                        .collect(Collectors.toMap(Chat::telegramId, Function.identity()));
+        idsHelper.checkIdsNotExist(data.keySet(), telegramIdOnChats.keySet());
 
-  }
+        data.putAll(telegramIdOnChats);
+    }
 
-  @Override
-  public void save(@NotNull Chat item) {
-    // TODO Auto-generated method stub
+    @Override
+    public void save(@NotNull Chat item) {
 
-  }
+        Set<String> telegramIdCollection = Collections.singleton(item.telegramId());
+        idsHelper.checkIdsNotExist(data.keySet(), telegramIdCollection);
 
-  @Override
-  public void deleteAll() {
-    // TODO Auto-generated method stub
+        data.put(item.telegramId(), item);
+    }
 
-  }
+    @Override
+    public void deleteAll() {
+        data.clear();
+    }
 
-  @Override
-  public void deleteByTelegramId(@NotNull String telegramId) {
-    // TODO Auto-generated method stub
+    @Override
+    public void deleteByTelegramId(@NotNull String telegramId) {
+        data.remove(telegramId);
+    }
 
-  }
-
-  @Override
-  public void deleteByUsername(@NotNull String username) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public boolean update(@NotNull Chat item) {
-    // TODO Auto-generated method stub
-    return false;
-  }
+    @Override
+    public boolean update(@NotNull Chat item) {
+        Chat prevValue = data.putIfAbsent(item.telegramId(), item);
+        if (prevValue == null) {
+            return false;
+        }
+        return true;
+    }
 }
