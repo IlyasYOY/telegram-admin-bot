@@ -12,15 +12,15 @@ import ru.ilyasyoy.telegram.admin.configuration.property.TelegramBotProperties;
 @Slf4j
 @RequiredArgsConstructor
 public final class AdminTelegramLongPollingBot extends TelegramLongPollingBot {
-  @Delegate private final TelegramBotProperties telegramAdminBotProperties;
+    @Delegate private final TelegramBotProperties telegramAdminBotProperties;
 
-  @Override
-  public void onRegister() {
-    log.info("Bot was registered: {}", this);
-  }
+    @Override
+    public void onRegister() {
+        log.info("Bot was registered: {}", this);
+    }
 
-  @Override
-  public void onUpdateReceived(Update update) {
-    log.debug("Update received: {}", update);
-  }
+    @Override
+    public void onUpdateReceived(Update update) {
+        log.debug("Update received: {}", update);
+    }
 }

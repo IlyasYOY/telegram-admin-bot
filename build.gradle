@@ -41,12 +41,11 @@ dependencies {
 }
 
 spotless {
-	enforceCheck false
 	java {
 		importOrder() // standard import order
 		removeUnusedImports()
 
-    	googleJavaFormat() // has its own section below
+    	googleJavaFormat().aosp() // has its own section below
   	}
 }
 
