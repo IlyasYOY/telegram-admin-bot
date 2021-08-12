@@ -5,8 +5,5 @@ import org.springframework.context.annotation.Configuration;
 import ru.ilyasyoy.telegram.admin.configuration.property.TelegramAdminBotProperties;
 
 @Configuration
-@EnableConfigurationProperties({
-        TelegramAdminBotProperties.class
-})
-public class PropertiesConfiguration {
-}
+@EnableConfigurationProperties({TelegramAdminBotProperties.class})
+public class PropertiesConfiguration {}
