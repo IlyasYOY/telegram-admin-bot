@@ -10,15 +10,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 import ru.ilyasyoy.telegram.admin.domain.entity.Chat;
 import ru.ilyasyoy.telegram.admin.domain.repository.ChatDomainRepository;
 
 @Component
 @RequiredArgsConstructor
-@ConditionalOnMissingBean(ChatDomainRepository.class)
-public final class MemoryChatDomainRepository implements ChatDomainRepository {
+public class MemoryChatDomainRepository implements ChatDomainRepository {
     private final Map<String, Chat> data = new ConcurrentHashMap<>();
     private final IdsHelper idsHelper;
 

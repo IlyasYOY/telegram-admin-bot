@@ -1,12 +1,8 @@
 package ru.ilyasyoy.telegram.admin;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-@ActiveProfiles("test")
-class TelegramAdminBotApplicationTests {
+class TelegramAdminBotApplicationTests extends BaseIntegrationTest {
 
     @Test
     void contextLoads() {}

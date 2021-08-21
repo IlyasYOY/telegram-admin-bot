@@ -10,15 +10,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 import ru.ilyasyoy.telegram.admin.domain.entity.User;
 import ru.ilyasyoy.telegram.admin.domain.repository.UserDomainRepository;
 
 @Component
 @RequiredArgsConstructor
-@ConditionalOnMissingBean(UserDomainRepository.class)
-public final class MemoryUserDomainRepository implements UserDomainRepository {
+public class MemoryUserDomainRepository implements UserDomainRepository {
     private final Map<String, User> data = new ConcurrentHashMap<>();
     private final IdsHelper idsHelper;
 

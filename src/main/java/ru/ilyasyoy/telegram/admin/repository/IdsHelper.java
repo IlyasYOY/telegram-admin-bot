@@ -3,7 +3,7 @@ package ru.ilyasyoy.telegram.admin.repository;
 import java.util.Collection;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.jvnet.hk2.annotations.Service;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
