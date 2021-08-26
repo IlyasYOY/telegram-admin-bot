@@ -15,3 +15,5 @@ out/
 
 .vscode
 bin
+
+src/main/resources/application-local.yml

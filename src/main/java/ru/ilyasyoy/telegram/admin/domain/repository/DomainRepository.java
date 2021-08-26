@@ -10,7 +10,7 @@ public interface DomainRepository<T> {
 
     Collection<T> findAll();
 
-    Optional<T> findByTelegramId(@NotNull String telegramId);
+    Optional<T> findByTelegramId(long telegramId);
 
     void saveAll(Collection<T> collection);
 
@@ -18,7 +18,7 @@ public interface DomainRepository<T> {
 
     void deleteAll();
 
-    void deleteByTelegramId(@NotNull String telegramId);
+    void deleteByTelegramId(long telegramId);
 
     boolean update(@NotNull T item);
 }

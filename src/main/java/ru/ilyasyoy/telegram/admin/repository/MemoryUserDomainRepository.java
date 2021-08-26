@@ -17,7 +17,7 @@ import ru.ilyasyoy.telegram.admin.domain.repository.UserDomainRepository;
 @Component
 @RequiredArgsConstructor
 public class MemoryUserDomainRepository implements UserDomainRepository {
-    private final Map<String, User> data = new ConcurrentHashMap<>();
+    private final Map<Long, User> data = new ConcurrentHashMap<>();
     private final IdsHelper idsHelper;
 
     @Override
@@ -26,7 +26,7 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
     }
 
     @Override
-    public Optional<User> findByTelegramId(@NotNull String telegramId) {
+    public Optional<User> findByTelegramId(long telegramId) {
         User user = data.get(telegramId);
         if (user == null) {
             return Optional.empty();
@@ -42,7 +42,7 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
 
     @Override
     public void saveAll(Collection<User> collection) {
-        Map<String, User> usersByTelegramId =
+        Map<Long, User> usersByTelegramId =
                 collection.stream()
                         .collect(Collectors.toMap(User::telegramId, Function.identity()));
 
@@ -53,7 +53,7 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
 
     @Override
     public void save(@NotNull User item) {
-        Set<String> itemIdContainer = Collections.singleton(item.telegramId());
+        Set<Long> itemIdContainer = Collections.singleton(item.telegramId());
         idsHelper.checkIdsNotExist(data.keySet(), itemIdContainer);
         data.put(item.telegramId(), item);
     }
@@ -64,7 +64,7 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
     }
 
     @Override
-    public void deleteByTelegramId(@NotNull String telegramId) {
+    public void deleteByTelegramId(long telegramId) {
         data.remove(telegramId);
     }
 

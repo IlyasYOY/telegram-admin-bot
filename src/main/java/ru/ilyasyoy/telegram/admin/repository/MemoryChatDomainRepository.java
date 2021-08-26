@@ -17,7 +17,7 @@ import ru.ilyasyoy.telegram.admin.domain.repository.ChatDomainRepository;
 @Component
 @RequiredArgsConstructor
 public class MemoryChatDomainRepository implements ChatDomainRepository {
-    private final Map<String, Chat> data = new ConcurrentHashMap<>();
+    private final Map<Long, Chat> data = new ConcurrentHashMap<>();
     private final IdsHelper idsHelper;
 
     @Override
@@ -26,7 +26,7 @@ public class MemoryChatDomainRepository implements ChatDomainRepository {
     }
 
     @Override
-    public Optional<Chat> findByTelegramId(@NotNull String telegramId) {
+    public Optional<Chat> findByTelegramId(long telegramId) {
         Chat chat = data.get(telegramId);
         if (chat == null) {
             return Optional.empty();
@@ -37,7 +37,7 @@ public class MemoryChatDomainRepository implements ChatDomainRepository {
 
     @Override
     public void saveAll(Collection<Chat> collection) {
-        Map<String, Chat> telegramIdOnChats =
+        Map<Long, Chat> telegramIdOnChats =
                 collection.stream()
                         .collect(Collectors.toMap(Chat::telegramId, Function.identity()));
         idsHelper.checkIdsNotExist(data.keySet(), telegramIdOnChats.keySet());
@@ -47,8 +47,7 @@ public class MemoryChatDomainRepository implements ChatDomainRepository {
 
     @Override
     public void save(@NotNull Chat item) {
-
-        Set<String> telegramIdCollection = Collections.singleton(item.telegramId());
+        Set<Long> telegramIdCollection = Collections.singleton(item.telegramId());
         idsHelper.checkIdsNotExist(data.keySet(), telegramIdCollection);
 
         data.put(item.telegramId(), item);
@@ -60,7 +59,7 @@ public class MemoryChatDomainRepository implements ChatDomainRepository {
     }
 
     @Override
-    public void deleteByTelegramId(@NotNull String telegramId) {
+    public void deleteByTelegramId(long telegramId) {
         data.remove(telegramId);
     }
 

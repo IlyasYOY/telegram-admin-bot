@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.ilyasyoy.telegram.admin.domain.entity.Chat;
@@ -23,7 +22,7 @@ class MemoryChatDomainRepositoryTest {
 
     @Test
     void testSave() {
-        var telegramId = UUID.randomUUID().toString();
+        var telegramId = 42L;
         var name = "Cozy Chat";
 
         var chat = Chat.builder().telegramId(telegramId).name(name).build();
