@@ -1,4 +1,4 @@
-package ru.ilyasyoy.telegram.admin.domain.value;
+package ru.ilyasyoy.telegram.admin.domain.value.incoming;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package ru.ilyasyoy.telegram.admin.bot;
+package ru.ilyasyoy.telegram.admin.telegram.bot;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -8,14 +8,16 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.ilyasyoy.telegram.admin.configuration.annotation.Bot;
 import ru.ilyasyoy.telegram.admin.configuration.property.TelegramBotProperties;
-import ru.ilyasyoy.telegram.admin.domain.value.ChatStatusIncomingMessage;
-import ru.ilyasyoy.telegram.admin.domain.value.ChatStatusUpdateType;
+import ru.ilyasyoy.telegram.admin.domain.IncomingMessageResolver;
+import ru.ilyasyoy.telegram.admin.domain.processor.IncomingMessageProcessor;
 
 @Bot
 @Slf4j
 @RequiredArgsConstructor
 public final class AdminTelegramLongPollingBot extends TelegramLongPollingBot {
     @Delegate private final TelegramBotProperties telegramAdminBotProperties;
+    private final IncomingMessageResolver<Update> incomingMessageResolver;
+    private final IncomingMessageProcessor incomingMessageProcessor;
 
     @Override
     @SneakyThrows
@@ -26,18 +28,10 @@ public final class AdminTelegramLongPollingBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         log.debug("Update received: {}", update);
-
-        if (update.hasMyChatMember()) {
-            var myChatStatus = update.getMyChatMember();
-            var id = myChatStatus.getChat().getId();
-            var status = myChatStatus.getNewChatMember().getStatus();
-
-            var parsedChatStatus =
-                    ChatStatusUpdateType.of(status)
-                            .orElseThrow(() -> new IllegalArgumentException(status));
-
-            var chatStatusIncomingMessage = new ChatStatusIncomingMessage(id, parsedChatStatus);
-            log.debug(chatStatusIncomingMessage.toString());
-        }
+        incomingMessageResolver
+                .resolve(update)
+                .ifPresentOrElse(
+                        item -> log.debug("Incoming message received: {}", item),
+                        () -> log.error("Cannot parse incoming message from update: {}", update));
     }
 }
