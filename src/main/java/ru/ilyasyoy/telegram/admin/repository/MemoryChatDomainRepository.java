@@ -3,6 +3,7 @@ package ru.ilyasyoy.telegram.admin.repository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,6 +48,8 @@ public class MemoryChatDomainRepository implements ChatDomainRepository {
 
     @Override
     public void save(@NotNull Chat item) {
+        Objects.requireNonNull(item);
+
         Set<Long> telegramIdCollection = Collections.singleton(item.telegramId());
         idsHelper.checkIdsNotExist(data.keySet(), telegramIdCollection);
 
@@ -65,6 +68,8 @@ public class MemoryChatDomainRepository implements ChatDomainRepository {
 
     @Override
     public boolean update(@NotNull Chat item) {
+        Objects.requireNonNull(item);
+
         Chat prevValue = data.putIfAbsent(item.telegramId(), item);
         if (prevValue == null) {
             return false;

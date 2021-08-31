@@ -6,9 +6,9 @@ import javax.validation.constraints.NotNull;
 import org.jvnet.hk2.annotations.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.ilyasyoy.telegram.admin.domain.IncomingMessageResolver;
-import ru.ilyasyoy.telegram.admin.domain.value.incoming.ChatStatusIncomingMessage;
 import ru.ilyasyoy.telegram.admin.domain.value.incoming.ChatStatusUpdateType;
 import ru.ilyasyoy.telegram.admin.domain.value.incoming.IncomingMessage;
+import ru.ilyasyoy.telegram.admin.domain.value.incoming.MyChatStatusIncomingMessage;
 
 @Service
 public class TelegramUpdateIncomingMessageResolver implements IncomingMessageResolver<Update> {
@@ -23,7 +23,7 @@ public class TelegramUpdateIncomingMessageResolver implements IncomingMessageRes
             var status = myChatStatus.getNewChatMember().getStatus();
 
             return ChatStatusUpdateType.of(status)
-                    .map(parsedStatus -> new ChatStatusIncomingMessage(id, parsedStatus));
+                    .map(parsedStatus -> new MyChatStatusIncomingMessage(id, parsedStatus));
         }
 
         return Optional.empty();

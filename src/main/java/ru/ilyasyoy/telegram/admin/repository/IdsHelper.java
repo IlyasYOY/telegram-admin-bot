@@ -11,6 +11,7 @@ class IdsHelper {
     public <T> void checkIdsNotExist(Collection<T> existingIds, Collection<T> newIds) {
         Collection<T> existingAnyKeys =
                 (Collection<T>) CollectionUtils.intersection(existingIds, newIds);
+
         if (!existingAnyKeys.isEmpty()) {
             String message = "Cannot save: %s, they already exist".formatted(existingAnyKeys);
             log.error(message);

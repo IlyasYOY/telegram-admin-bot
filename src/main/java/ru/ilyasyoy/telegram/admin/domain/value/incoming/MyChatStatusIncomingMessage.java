@@ -1,6 +1,8 @@
 package ru.ilyasyoy.telegram.admin.domain.value.incoming;
 
-public record ChatStatusIncomingMessage(long chatId, ChatStatusUpdateType status)
+import javax.validation.constraints.NotNull;
+
+public record MyChatStatusIncomingMessage(long chatId, @NotNull ChatStatusUpdateType status)
         implements IncomingMessage {
 
     @Override

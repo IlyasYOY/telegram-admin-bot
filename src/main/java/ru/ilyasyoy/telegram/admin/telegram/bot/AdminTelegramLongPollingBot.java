@@ -30,8 +30,13 @@ public final class AdminTelegramLongPollingBot extends TelegramLongPollingBot {
         log.debug("Update received: {}", update);
         incomingMessageResolver
                 .resolve(update)
+                .flatMap(
+                        incomingMessage -> {
+                            log.debug("Incoming message received: {}", incomingMessage);
+                            return incomingMessageProcessor.process(incomingMessage);
+                        })
                 .ifPresentOrElse(
-                        item -> log.debug("Incoming message received: {}", item),
-                        () -> log.error("Cannot parse incoming message from update: {}", update));
+                        item -> log.debug("Outcoming message received: {}", item),
+                        () -> log.warn("Processed with empty outcome: {}", update));
     }
 }

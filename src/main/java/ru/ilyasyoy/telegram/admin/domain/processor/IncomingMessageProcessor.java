@@ -10,7 +10,7 @@ import ru.ilyasyoy.telegram.admin.domain.value.outcoming.OutcomingMessage;
 @Service
 public class IncomingMessageProcessor {
 
-    Optional<OutcomingMessage> process(@NotNull IncomingMessage incomingMessage) {
+    public Optional<OutcomingMessage> process(@NotNull IncomingMessage incomingMessage) {
         Objects.requireNonNull(incomingMessage);
 
         return Optional.empty();

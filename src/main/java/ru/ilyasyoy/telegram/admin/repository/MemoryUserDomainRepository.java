@@ -3,6 +3,7 @@ package ru.ilyasyoy.telegram.admin.repository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,6 +38,8 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
 
     @Override
     public Optional<User> findByUsername(@NotNull String username) {
+        Objects.requireNonNull(username);
+
         return data.values().stream().filter(user -> user.isSameUsername(username)).findAny();
     }
 
@@ -53,6 +56,8 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
 
     @Override
     public void save(@NotNull User item) {
+        Objects.requireNonNull(item);
+
         Set<Long> itemIdContainer = Collections.singleton(item.telegramId());
         idsHelper.checkIdsNotExist(data.keySet(), itemIdContainer);
         data.put(item.telegramId(), item);
@@ -70,6 +75,8 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
 
     @Override
     public void deleteByUsername(@NotNull String username) {
+        Objects.requireNonNull(username);
+
         data.values().stream()
                 .filter(user -> user.isSameUsername(username))
                 .findFirst()
@@ -78,6 +85,8 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
 
     @Override
     public boolean update(User item) {
+        Objects.requireNonNull(item);
+
         User prevValue = data.putIfAbsent(item.telegramId(), item);
         if (prevValue == null) {
             return false;
