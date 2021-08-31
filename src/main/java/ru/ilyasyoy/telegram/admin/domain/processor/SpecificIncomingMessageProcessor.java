@@ -9,7 +9,7 @@ interface SpecificIncomingMessageProcessor<T extends IncomingMessage> {
     @NotNull
     Class<T> getSupportedClass();
 
-    default boolean supports(T incomingMessage) {
+    default boolean supports(@NotNull T incomingMessage) {
         var supportedClass = getSupportedClass();
         return incomingMessage.getClass().equals(supportedClass);
     }

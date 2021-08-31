@@ -10,6 +10,7 @@ import ru.ilyasyoy.telegram.admin.configuration.annotation.Bot;
 import ru.ilyasyoy.telegram.admin.configuration.property.TelegramBotProperties;
 import ru.ilyasyoy.telegram.admin.domain.IncomingMessageResolver;
 import ru.ilyasyoy.telegram.admin.domain.processor.IncomingMessageProcessor;
+import ru.ilyasyoy.telegram.admin.domain.sender.MessageSender;
 
 @Bot
 @Slf4j
@@ -18,6 +19,7 @@ public final class AdminTelegramLongPollingBot extends TelegramLongPollingBot {
     @Delegate private final TelegramBotProperties telegramAdminBotProperties;
     private final IncomingMessageResolver<Update> incomingMessageResolver;
     private final IncomingMessageProcessor incomingMessageProcessor;
+    private final MessageSender messageSender;
 
     @Override
     @SneakyThrows
@@ -36,7 +38,10 @@ public final class AdminTelegramLongPollingBot extends TelegramLongPollingBot {
                             return incomingMessageProcessor.process(incomingMessage);
                         })
                 .ifPresentOrElse(
-                        item -> log.debug("Outcoming message received: {}", item),
+                        outcomingMessage -> {
+                            log.debug("Outcoming message received: {}", outcomingMessage);
+                            messageSender.send(outcomingMessage);
+                        },
                         () -> log.warn("Processed with empty outcome: {}", update));
     }
 }
