@@ -8,9 +8,9 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.ilyasyoy.telegram.admin.configuration.annotation.Bot;
 import ru.ilyasyoy.telegram.admin.configuration.property.TelegramBotProperties;
-import ru.ilyasyoy.telegram.admin.domain.IncomingMessageResolver;
-import ru.ilyasyoy.telegram.admin.domain.processor.IncomingMessageProcessor;
-import ru.ilyasyoy.telegram.admin.domain.sender.MessageSender;
+import ru.ilyasyoy.telegram.admin.domain.value.incoming.IncomingMessageProcessor;
+import ru.ilyasyoy.telegram.admin.domain.value.incoming.IncomingMessageResolver;
+import ru.ilyasyoy.telegram.admin.domain.value.outcoming.MessageSender;
 
 @Bot
 @Slf4j

@@ -3,9 +3,7 @@ package ru.ilyasyoy.telegram.admin.domain.repository;
 import java.util.Collection;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
-import org.springframework.validation.annotation.Validated;
 
-@Validated
 public interface DomainRepository<T> {
 
     Collection<T> findAll();

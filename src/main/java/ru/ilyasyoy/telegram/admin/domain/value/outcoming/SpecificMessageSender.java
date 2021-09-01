@@ -1,7 +1,6 @@
-package ru.ilyasyoy.telegram.admin.domain.sender;
+package ru.ilyasyoy.telegram.admin.domain.value.outcoming;
 
 import javax.validation.constraints.NotNull;
-import ru.ilyasyoy.telegram.admin.domain.value.outcoming.OutcomingMessage;
 
 public interface SpecificMessageSender<T extends OutcomingMessage> {
     @NotNull

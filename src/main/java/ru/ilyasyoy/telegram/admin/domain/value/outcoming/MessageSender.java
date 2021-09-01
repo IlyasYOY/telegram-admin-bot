@@ -1,12 +1,11 @@
-package ru.ilyasyoy.telegram.admin.domain.sender;
+package ru.ilyasyoy.telegram.admin.domain.value.outcoming;
 
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jvnet.hk2.annotations.Service;
-import ru.ilyasyoy.telegram.admin.domain.value.outcoming.OutcomingMessage;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service

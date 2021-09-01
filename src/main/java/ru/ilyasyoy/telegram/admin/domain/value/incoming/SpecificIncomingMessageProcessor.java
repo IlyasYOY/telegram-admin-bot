@@ -1,8 +1,7 @@
-package ru.ilyasyoy.telegram.admin.domain.processor;
+package ru.ilyasyoy.telegram.admin.domain.value.incoming;
 
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
-import ru.ilyasyoy.telegram.admin.domain.value.incoming.IncomingMessage;
 import ru.ilyasyoy.telegram.admin.domain.value.outcoming.OutcomingMessage;
 
 interface SpecificIncomingMessageProcessor<T extends IncomingMessage> {

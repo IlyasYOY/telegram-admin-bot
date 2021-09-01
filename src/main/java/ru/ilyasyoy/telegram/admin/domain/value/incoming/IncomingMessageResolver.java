@@ -1,9 +1,10 @@
-package ru.ilyasyoy.telegram.admin.domain;
+package ru.ilyasyoy.telegram.admin.domain.value.incoming;
 
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
-import ru.ilyasyoy.telegram.admin.domain.value.incoming.IncomingMessage;
+import org.springframework.validation.annotation.Validated;
 
+@Validated
 public interface IncomingMessageResolver<T> {
     Optional<IncomingMessage> resolve(@NotNull T from);
 }
