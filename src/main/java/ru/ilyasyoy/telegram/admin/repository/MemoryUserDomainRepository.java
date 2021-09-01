@@ -1,11 +1,9 @@
 package ru.ilyasyoy.telegram.admin.repository;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -19,7 +17,6 @@ import ru.ilyasyoy.telegram.admin.domain.repository.UserDomainRepository;
 @RequiredArgsConstructor
 public class MemoryUserDomainRepository implements UserDomainRepository {
     private final Map<Long, User> data = new ConcurrentHashMap<>();
-    private final IdsHelper idsHelper;
 
     @Override
     public Collection<User> findAll() {
@@ -49,8 +46,6 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
                 collection.stream()
                         .collect(Collectors.toMap(User::telegramId, Function.identity()));
 
-        idsHelper.checkIdsNotExist(data.keySet(), usersByTelegramId.keySet());
-
         data.putAll(usersByTelegramId);
     }
 
@@ -58,8 +53,6 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
     public void save(@NotNull User item) {
         Objects.requireNonNull(item);
 
-        Set<Long> itemIdContainer = Collections.singleton(item.telegramId());
-        idsHelper.checkIdsNotExist(data.keySet(), itemIdContainer);
         data.put(item.telegramId(), item);
     }
 

@@ -20,7 +20,7 @@ public class TelegramUpdateIncomingMessageResolver implements IncomingMessageRes
         if (update.hasMyChatMember()) {
             var myChatStatus = update.getMyChatMember();
             var id = myChatStatus.getChat().getId();
-            var chatName = myChatStatus.getChat().getUserName();
+            var chatName = update.getMyChatMember().getChat().getTitle();
             var status = myChatStatus.getNewChatMember().getStatus();
 
             return ChatStatusUpdateType.of(status)

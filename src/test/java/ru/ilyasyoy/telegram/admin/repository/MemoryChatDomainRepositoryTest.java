@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Test;
 import ru.ilyasyoy.telegram.admin.domain.entity.Chat;
 
 class MemoryChatDomainRepositoryTest {
-
-    private final IdsHelper idsHelper = new IdsHelper();
-    private final MemoryChatDomainRepository repo = new MemoryChatDomainRepository(idsHelper);
+    private final MemoryChatDomainRepository repo = new MemoryChatDomainRepository();
 
     @BeforeEach
     void setUp() {

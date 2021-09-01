@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MessageSender {
-    private final List<SpecificMessageSender<OutcomingMessage>> senders;
+    private final List<SpecificMessageSender> senders;
 
     public void send(@NotNull OutcomingMessage outcomingMessage) {
         Objects.requireNonNull(outcomingMessage);
 
-        for (SpecificMessageSender<OutcomingMessage> sender : senders) {
+        for (SpecificMessageSender sender : senders) {
             if (sender.supports(outcomingMessage)) {
                 sender.send(outcomingMessage);
             }
