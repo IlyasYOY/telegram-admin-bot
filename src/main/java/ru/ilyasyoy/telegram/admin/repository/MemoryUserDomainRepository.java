@@ -24,7 +24,7 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
     }
 
     @Override
-    public Optional<User> findByTelegramId(long telegramId) {
+    public Optional<User> findById(@NotNull Long telegramId) {
         User user = data.get(telegramId);
         if (user == null) {
             return Optional.empty();
@@ -62,7 +62,7 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
     }
 
     @Override
-    public void deleteByTelegramId(long telegramId) {
+    public void deleteById(@NotNull Long telegramId) {
         data.remove(telegramId);
     }
 

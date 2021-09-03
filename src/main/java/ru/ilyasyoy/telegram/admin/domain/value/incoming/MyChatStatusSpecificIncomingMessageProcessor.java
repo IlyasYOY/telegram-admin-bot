@@ -29,27 +29,35 @@ class MyChatStatusSpecificIncomingMessageProcessor
         ChatStatusUpdateType status = incomingMessage.status();
         String chatName = incomingMessage.chatName();
 
-        if (status == ChatStatusUpdateType.ADDED) {
-            Chat chat = new Chat(chatId, chatName);
-
-            chatDomainRepository.save(chat);
-
-            OutcomingMessage outcomingMessage =
-                    new SimpleOutcomingMessage(chatId, "Hello, it's me! Admin Bot!");
-
-            log.info("Bot was added in chat: {}", chat);
-
-            return Optional.of(outcomingMessage);
-        } else if (status == ChatStatusUpdateType.REMOVED) {
-            chatDomainRepository
-                    .findByTelegramId(chatId)
-                    .ifPresent(
-                            foundChat -> {
-                                log.info("Bot was removed from chat: {}", foundChat);
-                                chatDomainRepository.update(foundChat.deactivate());
-                            });
+        if (status == ChatStatusUpdateType.REMOVED) {
+            findAndDeactivateExisting(chatId);
+        } else if (status == ChatStatusUpdateType.ADDED) {
+            return saveNewChat(chatId, chatName);
         }
 
-        return null;
+        return Optional.empty();
+    }
+
+    private Optional<OutcomingMessage> saveNewChat(long chatId, String chatName) {
+        Chat chat = new Chat(chatId, chatName);
+
+        chatDomainRepository.save(chat);
+
+        String message = "Hello %s, it's me!".formatted(chatName);
+        OutcomingMessage outcomingMessage = new SimpleOutcomingMessage(chatId, message);
+
+        log.info("Bot was added in chat: {}", chat);
+
+        return Optional.of(outcomingMessage);
+    }
+
+    private void findAndDeactivateExisting(long chatId) {
+        chatDomainRepository
+                .findById(chatId)
+                .ifPresent(
+                        foundChat -> {
+                            log.info("Bot was removed from chat: {}", foundChat);
+                            chatDomainRepository.update(foundChat.deactivate());
+                        });
     }
 }

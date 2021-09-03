@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
 
-public interface DomainRepository<T> {
+public interface DomainRepository<K, T> {
 
     Collection<T> findAll();
 
-    Optional<T> findByTelegramId(long telegramId);
+    Optional<T> findById(@NotNull K id);
 
     void saveAll(Collection<T> collection);
 
@@ -16,7 +16,7 @@ public interface DomainRepository<T> {
 
     void deleteAll();
 
-    void deleteByTelegramId(long telegramId);
+    void deleteById(@NotNull K id);
 
     boolean update(@NotNull T item);
 }

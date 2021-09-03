@@ -4,7 +4,7 @@ import java.util.Optional;
 import javax.validation.constraints.NotNull;
 import ru.ilyasyoy.telegram.admin.domain.entity.User;
 
-public interface UserDomainRepository extends DomainRepository<User> {
+public interface UserDomainRepository extends DomainRepository<Long, User> {
 
     Optional<User> findByUsername(@NotNull String username);
 

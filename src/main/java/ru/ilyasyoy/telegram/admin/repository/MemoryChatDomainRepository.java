@@ -24,7 +24,7 @@ public class MemoryChatDomainRepository implements ChatDomainRepository {
     }
 
     @Override
-    public Optional<Chat> findByTelegramId(long telegramId) {
+    public Optional<Chat> findById(@NotNull Long telegramId) {
         Chat chat = data.get(telegramId);
         if (chat == null) {
             return Optional.empty();
@@ -55,7 +55,7 @@ public class MemoryChatDomainRepository implements ChatDomainRepository {
     }
 
     @Override
-    public void deleteByTelegramId(long telegramId) {
+    public void deleteById(@NotNull Long telegramId) {
         data.remove(telegramId);
     }
 

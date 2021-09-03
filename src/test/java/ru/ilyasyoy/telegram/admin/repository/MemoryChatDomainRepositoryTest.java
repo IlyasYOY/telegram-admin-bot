@@ -28,7 +28,7 @@ class MemoryChatDomainRepositoryTest {
         repo.save(chat);
 
         Collection<Chat> allItems = repo.findAll();
-        Optional<Chat> foundChat = repo.findByTelegramId(telegramId);
+        Optional<Chat> foundChat = repo.findById(telegramId);
 
         assertAll(
                 () -> assertTrue(foundChat.isPresent()),
