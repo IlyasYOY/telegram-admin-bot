@@ -16,9 +16,10 @@ public class MessageSender {
     public void send(@NotNull OutcomingMessage outcomingMessage) {
         Objects.requireNonNull(outcomingMessage);
 
-        for (SpecificMessageSender sender : senders) {
+        for (SpecificMessageSender<OutcomingMessage> sender : senders) {
             if (sender.supports(outcomingMessage)) {
                 sender.send(outcomingMessage);
+                return;
             }
         }
 

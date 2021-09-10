@@ -16,6 +16,7 @@ import ru.ilyasyoy.telegram.admin.domain.repository.ChatDomainRepository;
 @Component
 @RequiredArgsConstructor
 public class MemoryChatDomainRepository implements ChatDomainRepository {
+    // TODO: Problem with concurrent access. Data may be inconsistent.
     private final Map<Long, Chat> data = new ConcurrentHashMap<>();
 
     @Override

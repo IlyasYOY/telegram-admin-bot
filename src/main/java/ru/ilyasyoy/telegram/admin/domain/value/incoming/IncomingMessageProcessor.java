@@ -16,7 +16,7 @@ public class IncomingMessageProcessor {
     public Optional<OutcomingMessage> process(@NotNull IncomingMessage incomingMessage) {
         Objects.requireNonNull(incomingMessage);
 
-        for (SpecificIncomingMessageProcessor processor : processors) {
+        for (SpecificIncomingMessageProcessor<IncomingMessage> processor : processors) {
             if (processor.supports(incomingMessage)) {
                 return processor.process(incomingMessage);
             }

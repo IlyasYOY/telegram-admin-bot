@@ -16,6 +16,7 @@ import ru.ilyasyoy.telegram.admin.domain.repository.UserDomainRepository;
 @Component
 @RequiredArgsConstructor
 public class MemoryUserDomainRepository implements UserDomainRepository {
+    // TODO: Problem with concurrent access. Data may be inconsistent.
     private final Map<Long, User> data = new ConcurrentHashMap<>();
 
     @Override

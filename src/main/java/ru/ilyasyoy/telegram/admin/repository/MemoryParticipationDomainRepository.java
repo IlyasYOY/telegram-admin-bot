@@ -14,6 +14,7 @@ import ru.ilyasyoy.telegram.admin.domain.repository.ParticipationDomainRepositor
 
 @Component
 public class MemoryParticipationDomainRepository implements ParticipationDomainRepository {
+    // TODO: Problem with concurrent access. Data may be inconsistent.
     private final Map<CompoundKey, Participation> data =
             new ConcurrentHashMap<CompoundKey, Participation>();
 
