@@ -64,9 +64,7 @@ public class MemoryChatDomainRepository implements ChatDomainRepository {
     public boolean update(@NotNull Chat item) {
         Objects.requireNonNull(item);
 
-        Chat prevValue =
-                data.computeIfPresent(
-                        item.telegramId(), (key, value) -> value == null ? null : item);
+        Chat prevValue = data.computeIfPresent(item.telegramId(), (key, value) -> item);
 
         return prevValue != null;
     }
