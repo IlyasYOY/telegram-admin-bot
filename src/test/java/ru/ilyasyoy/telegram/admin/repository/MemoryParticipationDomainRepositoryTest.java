@@ -3,21 +3,18 @@ package ru.ilyasyoy.telegram.admin.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import lombok.Getter;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.ilyasyoy.telegram.admin.domain.entity.Chat;
-import ru.ilyasyoy.telegram.admin.domain.entity.Participation;
+import ru.ilyasyoy.telegram.admin.EasyRandomFeatures;
 import ru.ilyasyoy.telegram.admin.domain.entity.Participation.State;
-import ru.ilyasyoy.telegram.admin.domain.entity.User;
 import ru.ilyasyoy.telegram.admin.domain.repository.ParticipationDomainRepository.CompoundKey;
 
-class MemoryParticipationDomainRepositoryTest {
+class MemoryParticipationDomainRepositoryTest implements EasyRandomFeatures {
     private final MemoryParticipationDomainRepository repo =
             new MemoryParticipationDomainRepository();
-    private EasyRandom easyRandom = new EasyRandom();
+    @Getter private EasyRandom easyRandom = new EasyRandom();
 
     @BeforeEach
     void setUp() {
@@ -90,16 +87,5 @@ class MemoryParticipationDomainRepositoryTest {
                         assertThat(updatedParticipation)
                                 .isPresent()
                                 .hasValueSatisfying(x -> x.state().equals(State.CONFIRMED)));
-    }
-
-    Participation getRandomParticipation() {
-        var chat = new Chat(easyRandom.nextLong(), easyRandom.nextObject(String.class));
-        var user = new User(easyRandom.nextLong(), easyRandom.nextObject(String.class));
-
-        return new Participation(chat, user);
-    }
-
-    Stream<Participation> getRandomParticipations(int size) {
-        return IntStream.range(0, size).mapToObj(x -> getRandomParticipation());
     }
 }

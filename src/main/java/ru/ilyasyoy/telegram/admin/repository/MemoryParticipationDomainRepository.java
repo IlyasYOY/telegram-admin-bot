@@ -68,8 +68,7 @@ public class MemoryParticipationDomainRepository implements ParticipationDomainR
 
         CompoundKey key = CompoundKey.of(item);
 
-        Participation prevValue =
-                data.computeIfPresent(key, (unusedKey, value) -> value == null ? null : item);
+        Participation prevValue = data.computeIfPresent(key, (unusedKey, value) -> item);
 
         return prevValue != null;
     }

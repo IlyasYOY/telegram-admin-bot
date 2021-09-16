@@ -3,16 +3,15 @@ package ru.ilyasyoy.telegram.admin.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import lombok.Getter;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.ilyasyoy.telegram.admin.domain.entity.User;
+import ru.ilyasyoy.telegram.admin.EasyRandomFeatures;
 
-class MemoryUserDomainRepositoryTest {
+class MemoryUserDomainRepositoryTest implements EasyRandomFeatures {
     private final MemoryUserDomainRepository repo = new MemoryUserDomainRepository();
-    private EasyRandom easyRandom = new EasyRandom();
+    @Getter private EasyRandom easyRandom = new EasyRandom();
 
     @BeforeEach
     void setUp() {
@@ -86,13 +85,38 @@ class MemoryUserDomainRepositoryTest {
                                 .hasValueSatisfying(x -> x.username().equals(myName)));
     }
 
-    User getRandomUser() {
-        long telegramId = easyRandom.nextLong();
-        String name = easyRandom.nextObject(String.class);
-        return new User(telegramId, name);
+    @Test
+    void testFindByUserNameAbsent() {
+        var users = getRandomUsers(10).toList();
+
+        repo.saveAll(users);
+
+        var userOpitonal = repo.findByUsername("Ilia");
+
+        assertThat(userOpitonal).isEmpty();
     }
 
-    Stream<User> getRandomUsers(int size) {
-        return IntStream.range(0, size).mapToObj(x -> getRandomUser());
+    @Test
+    void testFindByUserNamePresent() {
+        var users = getRandomUsers(10).toList();
+        var searchForUser = users.get(0);
+
+        repo.saveAll(users);
+
+        var userOpitonal = repo.findByUsername(searchForUser.username());
+
+        assertThat(userOpitonal).contains(searchForUser).isPresent();
+    }
+
+    @Test
+    void testDeleteByUserNamePresent() {
+        var users = getRandomUsers(10).toList();
+        var searchForUser = users.get(0);
+
+        repo.saveAll(users);
+
+        repo.deleteByUsername(searchForUser.username());
+
+        assertThat(repo.findAll()).noneMatch(searchForUser::equals);
     }
 }

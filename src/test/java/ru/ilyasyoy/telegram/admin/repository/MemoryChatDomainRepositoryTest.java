@@ -3,16 +3,15 @@ package ru.ilyasyoy.telegram.admin.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import lombok.Getter;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.ilyasyoy.telegram.admin.domain.entity.Chat;
+import ru.ilyasyoy.telegram.admin.EasyRandomFeatures;
 
-class MemoryChatDomainRepositoryTest {
+class MemoryChatDomainRepositoryTest implements EasyRandomFeatures {
     private final MemoryChatDomainRepository repo = new MemoryChatDomainRepository();
-    private EasyRandom easyRandom = new EasyRandom();
+    @Getter private EasyRandom easyRandom = new EasyRandom();
 
     @BeforeEach
     void setUp() {
@@ -84,15 +83,5 @@ class MemoryChatDomainRepositoryTest {
                         assertThat(updatedChat)
                                 .isPresent()
                                 .hasValueSatisfying(x -> x.name().equals(myName)));
-    }
-
-    Chat getRandomChat() {
-        long telegramId = easyRandom.nextLong();
-        String name = easyRandom.nextObject(String.class);
-        return new Chat(telegramId, name);
-    }
-
-    Stream<Chat> getRandomChats(int size) {
-        return IntStream.range(0, size).mapToObj(x -> getRandomChat());
     }
 }

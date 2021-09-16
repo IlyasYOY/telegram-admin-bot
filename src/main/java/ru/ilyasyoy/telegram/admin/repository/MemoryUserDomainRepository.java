@@ -81,9 +81,7 @@ public class MemoryUserDomainRepository implements UserDomainRepository {
     public boolean update(User item) {
         Objects.requireNonNull(item);
 
-        User prevValue =
-                data.computeIfPresent(
-                        item.telegramId(), (key, value) -> value == null ? null : item);
+        User prevValue = data.computeIfPresent(item.telegramId(), (key, value) -> item);
 
         return prevValue != null;
     }
