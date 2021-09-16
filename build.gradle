@@ -10,7 +10,7 @@ plugins {
 
 group = 'ru.ilyasyoy.telegram.admin'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '16'
 
 configurations {
     compileOnly {
@@ -41,6 +41,9 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
 
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "org.jeasy:easy-random-core:${easyRandomVersion}"
 }
@@ -51,7 +54,7 @@ spotless {
         removeUnusedImports()
 
         googleJavaFormat().aosp() // has its own section below
-      }
+    }
 }
 
 test {
